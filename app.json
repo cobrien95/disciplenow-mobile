@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "DiscipleNow-mobile",
+    "slug": "DiscipleNow-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/NewLogo/png/logo-color.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/NewLogo/png/logo-no-background.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000",
+      "alignItems": "center",
+      "justifyContent": "center"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/NewLogo/png/logo-no-background.png",
+        "backgroundColor": "#ffffff"
+      }
+    }
+  }
+}
