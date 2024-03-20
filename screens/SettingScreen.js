@@ -117,12 +117,12 @@ const SettingScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={styles.backButton}
         >
           <MaterialIcons name="keyboard-arrow-left" size={24} color="#000" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <Text style={styles.pageTitle}>Settings</Text>
       </View>
 

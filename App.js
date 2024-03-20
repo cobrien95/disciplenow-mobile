@@ -7,6 +7,7 @@ import {
   useColorScheme,
 } from "react-native";
 import Login from "./screens/LoginScreen";
+import Keyboard from './screens/Keyboard'
 import Profile from "./screens/Profile";
 import EditProfile from './screens/EditProfile'
 import ResourcesScreen from "./screens/ResourcesScreen";
@@ -69,6 +70,16 @@ const MyTabs = () => {
           ),
         }}
       />
+      <Tab.Screen
+        name="Keyboard"
+        component={KeyboardScreen}
+        options={{
+          headerShown: false,
+          tabBarIcon: () => (
+            <AntDesign name="setting" size={24} color="black" />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 };
@@ -88,6 +99,11 @@ function App() {
         /> */
   }
 }
+
+const KeyboardScreen = () => {
+  return <Keyboard />
+}
+
 const EditProfileScreen = () => {
   return <EditProfile />
 }
