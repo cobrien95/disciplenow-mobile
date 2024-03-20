@@ -7,6 +7,10 @@ import {
   ScrollView,
   Image,
   TextInput,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -19,7 +23,7 @@ import {
   DUMMYCHURCH,
 } from "../constants/data";
 
-const EditProfileScreen = ({ navigation }) => {
+const EditProfileScreen = () => {
   const [selectedImage, setSelectedImage] = useState(imagesDataURL[0]);
   const [name, setName] = useState(DUMMYMENTOR.fullName);
   const [email, setEmail] = useState(DUMMYMENTOR.email);
@@ -48,7 +52,8 @@ const EditProfileScreen = ({ navigation }) => {
   };
 
   const birthdateSelected = (event, selectedDate) => {
-    setDate(selectedDate.toString());
+    console.log(selectedDate);
+    setDate(selectedDate);
     setShowCalendar(false);
   };
 
@@ -59,102 +64,110 @@ const EditProfileScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={styles.backButton}
         >
           <MaterialIcons name="keyboard-arrow-left" size={24} color="#000" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <Text style={styles.pageTitle}>Edit Profile</Text>
       </View>
-
-      <ScrollView>
-        <View style={styles.scrollViewImage}>
-          <TouchableOpacity onPress={handleImageSelection}>
-            <Image source={{ uri: selectedImage }} style={styles.imageStyle} />
-            <View style={styles.imageView}>
-              <MaterialIcons name="photo-camera" size={32} />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}
+      >
+        <ScrollView>
+          <View style={styles.scrollViewImage}>
+            <TouchableOpacity onPress={handleImageSelection}>
+              <Image
+                source={{ uri: selectedImage }}
+                style={styles.imageStyle}
+              />
+              <View style={styles.imageView}>
+                <MaterialIcons name="photo-camera" size={32} />
+              </View>
+            </TouchableOpacity>
+          </View>
+          {/* <View> */}
+            <View style={styles.scrollViewProfile}>
+              <Text style={styles.profileInfoTitle}>Name</Text>
+              <View style={styles.profileInfo}>
+                <TextInput
+                  value={name}
+                  onChangeText={(value) => setName(value)}
+                  editable={true}
+                />
+              </View>
+              <Text style={styles.profileInfoTitle}>Email</Text>
+              <View style={styles.profileInfo}>
+                <TextInput
+                  value={email}
+                  onChangeText={(value) => setEmail(value)}
+                  editable={true}
+                />
+              </View>
             </View>
-          </TouchableOpacity>
-        </View>
-        <View>
-          <View style={styles.scrollViewProfile}>
-            <Text style={styles.profileInfoTitle}>Name</Text>
+            <Text style={styles.profileInfoTitle}>Password</Text>
             <View style={styles.profileInfo}>
               <TextInput
-                value={name}
-                onChangeText={(value) => setName(value)}
+                value={password}
+                onChangeText={(value) => setPassword(value)}
+                editable={true}
+                secureTextEntry
+              />
+            </View>
+            <Text style={styles.profileInfoTitle}>Address</Text>
+            <View style={styles.profileInfo}>
+              <TextInput
+                value={addressOne}
+                onChangeText={(value) => setAddressOne(value)}
                 editable={true}
               />
             </View>
-            <Text style={styles.profileInfoTitle}>Email</Text>
+            <Text style={styles.profileInfoTitle}>Address Two</Text>
             <View style={styles.profileInfo}>
               <TextInput
-                value={email}
-                onChangeText={(value) => setEmail(value)}
+                value={addressTwo}
+                onChangeText={(value) => setAddressTwo(value)}
                 editable={true}
               />
             </View>
-          </View>
-          <Text style={styles.profileInfoTitle}>Password</Text>
-          <View style={styles.profileInfo}>
-            <TextInput
-              value={password}
-              onChangeText={(value) => setPassword(value)}
-              editable={true}
-              secureTextEntry
-            />
-          </View>
-          <Text style={styles.profileInfoTitle}>Address</Text>
-          <View style={styles.profileInfo}>
-            <TextInput
-              value={addressOne}
-              onChangeText={(value) => setAddressOne(value)}
-              editable={true}
-            />
-          </View>
-          <Text style={styles.profileInfoTitle}>Address Two</Text>
-          <View style={styles.profileInfo}>
-            <TextInput
-              value={addressTwo}
-              onChangeText={(value) => setAddressTwo(value)}
-              editable={true}
-            />
-          </View>
-          <Text style={styles.profileInfoTitle}>Birth Date</Text>
-          <View style={styles.profileInfo}>
-            <Text onPress={birthdatePicker}>{date}</Text>
-            {showCalendar && (
-              <DateTimePicker
-                value={DUMMYMENTOR.dob.toString()}
-                mode={"date"}
-                onChange={birthdateSelected}
-              />
-            )}
-          </View>
-          <Text style={styles.profileInfoTitle}></Text>
-        </View>
-        {isMentor ? (
-          mentees.map((mentee, index) => (
-            <React.Fragment key={index}>
+            <Text style={styles.profileInfoTitle}>Birth Date</Text>
+            <View style={styles.profileInfo}>
+              <Text onPress={birthdatePicker}>{date}</Text>
+              {showCalendar && (
+                <DateTimePicker
+                  style={styles.calendar}
+                  mode="single"
+                  date={date}
+                  onChange={(date) => birthdateSelected(date)}
+                />
+              )}
+            </View>
+            <Text style={styles.profileInfoTitle}></Text>
+          {/* </View> */}
+          {isMentor ? (
+            mentees.map((mentee, index) => (
+              <React.Fragment key={index}>
+                <Text style={styles.profileInfoTitle}>Mentee</Text>
+                <View style={styles.profileInfo}>
+                  {/* <TouchableOpacity onPress={console.log("Hello")}> */}
+                  <Text>{mentee.fullName}</Text>
+                  {/* </TouchableOpacity> */}
+                </View>
+              </React.Fragment>
+            ))
+          ) : (
+            <>
               <Text style={styles.profileInfoTitle}>Mentee</Text>
               <View style={styles.profileInfo}>
-                <TouchableOpacity onPress={console.log("Hello")}>
-                  <Text>{mentee.fullName}</Text>
-                </TouchableOpacity>
+                <Text>Connor</Text>
+                <Text>{mentor.mentee}</Text>
               </View>
-            </React.Fragment>
-          ))
-        ) : (
-          <>
-            <Text style={styles.profileInfoTitle}>Mentee</Text>
-            <View style={styles.profileInfo}>
-              <Text>Connor</Text>
-              <Text>{mentor.mentee}</Text>
-            </View>
-          </>
-        )}
-      </ScrollView>
+            </>
+          )}
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -215,6 +228,9 @@ const styles = StyleSheet.create({
     marginVertical: 6,
     justifyContent: "center",
     paddingLeft: 8,
+  },
+  calendar: {
+    backgroundColor: "#f5fcff",
   },
 });
 
