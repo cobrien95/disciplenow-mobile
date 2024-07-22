@@ -24,6 +24,9 @@
         "foregroundImage": "./assets/NewLogo/png/logo-no-background.png",
         "backgroundColor": "#ffffff"
       }
-    }
+    },
+    "plugins": [
+      "expo-font"
+    ]
   }
 }

@@ -15,7 +15,7 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from "@expo/vector-icons";
-import DateTimePicker from "react-native-ui-datepicker";
+import DateTimePicker from '@react-native-community/datetimepicker';
 import {
   imagesDataURL,
   DUMMYMENTOR,
@@ -30,8 +30,10 @@ const EditProfileScreen = () => {
   const [password, setPassword] = useState(DUMMYMENTOR.password);
   const [addressOne, setAddressOne] = useState(DUMMYMENTOR.addressOne);
   const [addressTwo, setAddressTwo] = useState("");
-  const [date, setDate] = useState(DUMMYMENTOR.dob);
-  const [showCalendar, setShowCalendar] = useState(false);
+
+  const [date, setDate] = useState(new Date(DUMMYMENTOR.dob));
+  const [show, setShow] = useState(false)
+
   const isMentor = DUMMYMENTOR.mentor; //set by profile
   const mentees = DUMMYMENTOR.mentees; // pulled from mongoDB connection
   const handleImageSelection = async () => {
@@ -47,14 +49,15 @@ const EditProfileScreen = () => {
     }
   };
 
-  const birthdatePicker = () => {
-    setShowCalendar(true);
+  const showCalendar = (show) => {
+    setShow(true);
   };
 
-  const birthdateSelected = (event, selectedDate) => {
+  const onChange = (event, selectedDate) => {
     console.log(selectedDate);
+    // const currentDate = selectedDate
     setDate(selectedDate);
-    setShowCalendar(false);
+    setShow(false);
   };
 
   const navToProfile = (mentee) => {
@@ -134,13 +137,13 @@ const EditProfileScreen = () => {
             </View>
             <Text style={styles.profileInfoTitle}>Birth Date</Text>
             <View style={styles.profileInfo}>
-              <Text onPress={birthdatePicker}>{date}</Text>
-              {showCalendar && (
+              <Text onPress={showCalendar}>{date}</Text>
+              {setShow && (
                 <DateTimePicker
-                  style={styles.calendar}
-                  mode="single"
-                  date={date}
-                  onChange={(date) => birthdateSelected(date)}
+                  // style={styles.calendar}
+                  mode="date"
+                  value={date}
+                  onChange={onChange}
                 />
               )}
             </View>

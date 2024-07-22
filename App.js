@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
+import { useFonts } from "expo-font";
 import {
   View,
   StatusBar,
@@ -7,17 +8,49 @@ import {
   useColorScheme,
 } from "react-native";
 import Login from "./screens/LoginScreen";
-import Keyboard from './screens/Keyboard'
+import Keyboard from "./screens/Keyboard";
 import Profile from "./screens/Profile";
-import EditProfile from './screens/EditProfile'
+import EditProfile from "./screens/EditProfile";
 import ResourcesScreen from "./screens/ResourcesScreen";
 import SettingsScreen from "./screens/SettingScreen";
 import MessageGroupScreen from "./screens/MessageGroupScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
+import * as SplashScreen from "expo-splash-screen";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+
+import { FONTS } from "./constants/fonts";
 
 const Tab = createBottomTabNavigator();
+
+function App() {
+  const [fontsLoaded] = useFonts(FONTS);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
+  return (
+    <SafeAreaProvider style={styles.container}>
+      <NavigationContainer>
+        <MyTabs />
+      </NavigationContainer>
+    </SafeAreaProvider>
+  );
+  {
+    /* <StatusBar
+          barStyle={isDarkMode ? "light-content" : "dark-content"}
+          backgroundColor={backgroundStyle.backgroundColor}
+        /> */
+  }
+}
 
 //ApplicationID: 1C610E7A-2EF2-4DE5-954E-A5CFE31D7905
 
@@ -29,7 +62,7 @@ const MyTabs = () => {
         tabBarActiveTintColor: "#000",
         tabBarInactiveBackgroundColor: "#f71d3d",
         tabBarInactiveTintColor: "#fff",
-        tabBarHideOnKeyboard: true
+        tabBarHideOnKeyboard: true,
       }}
     >
       <Tab.Screen
@@ -70,7 +103,7 @@ const MyTabs = () => {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Keyboard"
         component={KeyboardScreen}
         options={{
@@ -79,34 +112,18 @@ const MyTabs = () => {
             <AntDesign name="setting" size={24} color="black" />
           ),
         }}
-      />
+      /> */}
     </Tab.Navigator>
   );
 };
 
-function App() {
-  return (
-    <SafeAreaView style={styles.container}>
-        <NavigationContainer>
-          <MyTabs />
-        </NavigationContainer>
-    </SafeAreaView>
-  );
-  {
-    /* <StatusBar
-          barStyle={isDarkMode ? "light-content" : "dark-content"}
-          backgroundColor={backgroundStyle.backgroundColor}
-        /> */
-  }
-}
-
-const KeyboardScreen = () => {
-  return <Keyboard />
-}
+// const KeyboardScreen = () => {
+//   return <Keyboard />;
+// };
 
 const EditProfileScreen = () => {
-  return <EditProfile />
-}
+  return <EditProfile />;
+};
 
 const ResourceScreen = () => {
   return <ResourcesScreen />;
