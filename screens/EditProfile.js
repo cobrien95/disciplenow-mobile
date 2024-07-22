@@ -24,6 +24,7 @@ import {
 } from "../constants/data";
 
 const EditProfileScreen = () => {
+  let dob = new Date.parse(DUMMYMENTOR.dob)
   const [selectedImage, setSelectedImage] = useState(imagesDataURL[0]);
   const [name, setName] = useState(DUMMYMENTOR.fullName);
   const [email, setEmail] = useState(DUMMYMENTOR.email);
@@ -31,7 +32,9 @@ const EditProfileScreen = () => {
   const [addressOne, setAddressOne] = useState(DUMMYMENTOR.addressOne);
   const [addressTwo, setAddressTwo] = useState("");
 
-  const [date, setDate] = useState(new Date(DUMMYMENTOR.dob));
+  // const [date, setDate] = useState(new Date(dob));
+  const [date, setDate] = useState(new Date(1598051730000))
+  const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false)
 
   const isMentor = DUMMYMENTOR.mentor; //set by profile
@@ -51,13 +54,18 @@ const EditProfileScreen = () => {
 
   const showCalendar = (show) => {
     setShow(true);
+    showMode('date')
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
   };
 
   const onChange = (event, selectedDate) => {
-    console.log(selectedDate);
-    // const currentDate = selectedDate
-    setDate(selectedDate);
+    const currentDate = selectedDate;
     setShow(false);
+    setDate(currentDate);
   };
 
   const navToProfile = (mentee) => {
@@ -66,6 +74,7 @@ const EditProfileScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      {console.log(dob)}
       <View style={styles.header}>
         {/* <TouchableOpacity
           onPress={() => navigation.goBack()}
@@ -136,17 +145,17 @@ const EditProfileScreen = () => {
               />
             </View>
             <Text style={styles.profileInfoTitle}>Birth Date</Text>
-            <View style={styles.profileInfo}>
-              <Text onPress={showCalendar}>{date}</Text>
+            {/* <View style={styles.profileInfo}> */}
+              {/* <Text onPress={showCalendar}>Selected: {date.toLocaleString()}</Text> */}
               {setShow && (
                 <DateTimePicker
-                  // style={styles.calendar}
-                  mode="date"
                   value={date}
+                  mode={mode}
                   onChange={onChange}
+                  style={styles.calendar}
                 />
               )}
-            </View>
+            {/* </View> */}
             <Text style={styles.profileInfoTitle}></Text>
           {/* </View> */}
           {isMentor ? (
@@ -233,7 +242,7 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
   },
   calendar: {
-    backgroundColor: "#f5fcff",
+    alignSelf: 'start'
   },
 });
 
